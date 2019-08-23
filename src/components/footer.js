@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 
+import Container from '@material-ui/core/Container'
+
 export class Footer extends Component {
     render() {
         return (
-            <div>
-                oh! Hi! im footerr!
-            </div>
+            <Container maxWidth="md">
+                Yay! all my task syncronize with server!
+            </Container>
         )
     }
 }
