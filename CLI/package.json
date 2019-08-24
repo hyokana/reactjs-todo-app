@@ -1,0 +1,30 @@
+{
+  "name": "@hyokana/efishery",
+  "version": "1.0.0",
+  "description": "A CLI to access task list.",
+  "main": "src/index.js",
+  "bin": {
+    "@hyokana/efishery": "bin/efishery",
+    "efishery": "bin/efishery"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "cli",
+    "efishery"
+  ],
+  "author": "hyo.kana@gmail.com",
+  "license": "MIT",
+  "dependencies": {
+    "arg": "^4.1.1",
+    "chalk": "^2.4.2",
+    "esm": "^3.2.25",
+    "inquirer": "^7.0.0",
+    "listr": "^0.14.3",
+    "pouchy-store": "^0.1.5"
+  }
+}

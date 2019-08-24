@@ -5,6 +5,7 @@
 
 .header-box input{
     line-height: 2em;
+    box-sizing : border-box;
     border: none;
     border-bottom: 1px solid #aaa;
     background: none;
