@@ -11,7 +11,11 @@ import { Container, List } from '@material-ui/core';
   
 class App extends React.Component {
 
-    state = {todo: '', id: '', tags: [], status: -1};
+    /**
+     * status: -1 new task, 1 task already finished
+     * tags: all tags related.
+     */
+    state = {todo: '', id: '', tags: null, status: -1};
 
     constructor(props) {
         super(props);
@@ -55,7 +59,7 @@ class App extends React.Component {
     }
 
     resetTodo(){
-        this.setState({todo: '', id: '', tags: [], status: -1});
+        this.setState({todo: '', id: '', tags: null, status: -1});
     }
 
 	async componentDidMount() {

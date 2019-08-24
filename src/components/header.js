@@ -1,9 +1,17 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import Select from 'react-select';
 
 import todos from '../models/todos'
 
 import '../styles/header.css';
-import Container from '@material-ui/core/Container';
+import { Container } from '@material-ui/core';
+
+
+const options = [
+    { value: 'housecare', label: 'Housecare' },
+    { value: 'workstuff', label: 'Work Stuff' },
+    { value: 'others', label: 'Others' },
+];
 
 export class Header extends Component {
 
@@ -15,8 +23,6 @@ export class Header extends Component {
      */
     constructor(props){
         super(props);
-
-        console.log(props);
 
         // set initial variable
         this.state = props.todo;
@@ -33,16 +39,6 @@ export class Header extends Component {
     }
 
     /**
-     * 
-     * Store select value into state. Tags purpose
-     * 
-     * @param {*} event 
-     */
-    handleChangeSelect(event) {
-        this.setState({tags: event.target.value});
-    }
-
-    /**
      * Add item and sent into database, auto upload(later moved)
      */
     async handleSubmit(){
@@ -52,25 +48,36 @@ export class Header extends Component {
         if(!this.state.id)
             await todos.addItem({
                 todo: this.state.todo,
-                status: -1, // -1 for new, 0 for read, 1 for done
-                tags: ['asdf', 'jkl', 'qwe'] // not yet implemented
+                status: -1,
+                tags: this.state.tags
             });
         else
             await todos.editItem(this.state.id, {
                 todo: this.state.todo,
-                status: -1, // -1 for new, 0 for read, 1 for done
-                tags: this.state.tags // not yet implemented
+                tags: this.state.tags
             });
         this.props.resetTodo(); 
         await todos.upload();
     }
 
     render() {
+        const { tags } = this.state;
         return (
             <div className="header-box">
+                <Container maxWidth="md" style={{marginBottom: '5px'}}>
+                <Select
+                    value={tags}
+                    onChange={tags => {this.props.updateTodo({tags})}}
+                    options={options}
+                    isMulti
+                    placeholder={'Select tags... ex. Housecare'}
+                />
+                </Container>
                 <Container maxWidth="md">
                     <form onSubmit={e => {e.preventDefault()}}>
-                        <input type="text" placeholder="Add To do Here... ex. 'feed the cat'" value={this.state.todo} onChange={_ => {this.props.updateTodo({todo: _.target.value})}} onKeyUp={ e => {if(e.key === 'Enter') this.handleSubmit(e);}}/>
+                        <div style={{width: '100%'}}>
+                            <input type="text" placeholder="Add To do Here... ex. 'feed the cat'" value={this.state.todo} onChange={_ => {this.props.updateTodo({todo: _.target.value})}} onKeyUp={ e => {if(e.key === 'Enter') this.handleSubmit(e);}}/>
+                        </div>
                     </form>
                 </Container>
             </div>
