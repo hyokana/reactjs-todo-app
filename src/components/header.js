@@ -7,23 +7,39 @@ import Container from '@material-ui/core/Container';
 
 export class Header extends Component {
 
+    /**
+     * 
+     * Get data from parent, set resetTodo function
+     * 
+     * @param {*} props 
+     */
     constructor(props){
         super(props);
-        this.state = {todo: ''}; // initiate todo variable
 
+        console.log(props);
+
+        // set initial variable
+        this.state = props.todo;
         // bind this into function
-        this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    
+    /**
+     * Update props when page updated
+     */
+    static getDerivedStateFromProps = (props, state) => {
+        return props.todo;
     }
 
     /**
      * 
-     * Store input value into state.
+     * Store select value into state. Tags purpose
      * 
      * @param {*} event 
      */
-    handleChange(event) {
-        this.setState({todo: event.target.value});
+    handleChangeSelect(event) {
+        this.setState({tags: event.target.value});
     }
 
     /**
@@ -32,13 +48,20 @@ export class Header extends Component {
     async handleSubmit(){
         if(!this.state.todo)
             return false;
-            
-        await todos.addItem({
-            todo: this.state.todo,
-            status: -1, // -1 for new, 0 for read, 1 for done
-            tags: ['asdf', 'jkl', 'qwe'] // not yet implemented
-        });
-        this.setState({todo: ''});
+        
+        if(!this.state.id)
+            await todos.addItem({
+                todo: this.state.todo,
+                status: -1, // -1 for new, 0 for read, 1 for done
+                tags: ['asdf', 'jkl', 'qwe'] // not yet implemented
+            });
+        else
+            await todos.editItem(this.state.id, {
+                todo: this.state.todo,
+                status: -1, // -1 for new, 0 for read, 1 for done
+                tags: this.state.tags // not yet implemented
+            });
+        this.props.resetTodo(); 
         await todos.upload();
     }
 
@@ -47,7 +70,7 @@ export class Header extends Component {
             <div className="header-box">
                 <Container maxWidth="md">
                     <form onSubmit={e => {e.preventDefault()}}>
-                        <input type="text" placeholder="Add To do Here... ex. 'feed the cat'" value={this.state.todo} onChange={this.handleChange} onKeyUp={ e => {if(e.key === 'Enter') this.handleSubmit(e);}}/>
+                        <input type="text" placeholder="Add To do Here... ex. 'feed the cat'" value={this.state.todo} onChange={_ => {this.props.updateTodo({todo: _.target.value})}} onKeyUp={ e => {if(e.key === 'Enter') this.handleSubmit(e);}}/>
                     </form>
                 </Container>
             </div>
