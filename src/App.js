@@ -11,16 +11,25 @@ import { Container, List } from '@material-ui/core';
   
 class App extends React.Component {
 
+    state = {todo: '', id: '', tags: [], status: -1};
+
+    constructor(props) {
+        super(props);
+        this.updateTodo = this.updateTodo.bind(this);
+        this.editTodo   = this.editTodo.bind(this);
+        this.resetTodo   = this.resetTodo.bind(this);
+      }
+
     render() {
                 
         var eltodos = [];
         for(var i of todos.data){
-            eltodos.push(<TodoComponent key={i._id} data={i} />);
+            eltodos.push(<TodoComponent key={i._id} data={i} editTodo={this.editTodo} />);
         }
 
         return (
             <div>
-                <Header/>
+                <Header todo={this.state} resetTodo={this.resetTodo} updateTodo={this.updateTodo}/>
 
                 <Container maxWidth="md">
                     <List>
@@ -28,17 +37,28 @@ class App extends React.Component {
                     </List>
                 </Container>
 
-                <Footer/>
+                <Footer uploaddata={{notuploaded: todos.countUnuploadeds()}}/>
             </div>
         );
     }
-
-    componentDidUpdate() {
-        console.log("Component Did Update...");
-    }
     
+    updateTodo(data){
+        this.setState(data);
+    }
+
+    editTodo(data){
+        this.setState({
+            id: data._id,
+            todo: data.todo,
+            tags: data.tags
+        });
+    }
+
+    resetTodo(){
+        this.setState({todo: '', id: '', tags: [], status: -1});
+    }
+
 	async componentDidMount() {
-        console.log("Component Did Mount...");
         this.unsubTodos = todos.subscribe(() => {
             this.setState({
                 timestamp: new Date(),
@@ -50,9 +70,9 @@ class App extends React.Component {
 		}
 	}
 
-	componentWillUnmount() {
-        console.log("Component Will Unmount...");
-		this.unsubTodos();
+	async componentWillUnmount() {
+        this.unsubTodos();
+        await todos.deinitialize();
     }
 
 }
