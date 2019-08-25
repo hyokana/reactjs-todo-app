@@ -4,7 +4,7 @@ Todo list offline-first web app using ReactJS and CLI for listing and completing
 ### Intallation
 This app use Node.js to run.
 
-##### Webapp
+#### Webapp
 Install dependencies on webapp folder, and 'npm start'.
 
 ```sh
@@ -28,14 +28,14 @@ $ npm i
 ```
 After installation of dependencies there is several ways to run this app.
 
-##### Direct use
+#### Direct use
 open 'cli/bin' folder, type 'node efishery'
 ```sh
 $ cd cli/bin
 $ node efishery
 ```
 
-##### Intall cli into global
+#### Intall cli into global
 Install cli program into npm global package.
 ```sh
 $ cd cli
