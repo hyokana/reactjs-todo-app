@@ -1,4 +1,4 @@
-import PouchyStore from 'pouchy-store';
+import PouchyStore from '../temp_package/pouchy-store/PouchyStore';
 import config from './config';
 
 class Todos extends PouchyStore {
